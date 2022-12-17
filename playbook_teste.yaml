@@ -1,0 +1,26 @@
+###################################################################
+# Script Name   : Playbook Main NetWorking
+# Description   : Playbook default para utilização do ansible
+# Versão        : 0.1
+# Data          : 04/11/2022
+# Author        : Samuel Xavier Melo
+# Matricula     : 3513
+# Time          : NetWorking
+# Email         : samuel.xavier@hotmart.com
+######################################################################
+
+- name: Playbook Default for Windows
+  hosts: all
+  become: false
+  gather_facts: false
+  tasks:
+    - name: check java
+      ansible.windows.win_shell: 'Get-wmiobject Win32_Product | Where-Object -FilterScript {$_.Name -like "*Java*"} | Format-Table Name, LocalPackage, IdentifyingNumber'
+      register: command_output
+      tags:
+          - test
+    - name: command output
+      ansible.builtin.debug:
+        var: command_output.stdout_lines
+      tags:
+          - show
